@@ -32,7 +32,7 @@
             <template #content>
               <ul ref="ul">
                 <li v-for="(item, index) in DATA_MAP[treeActive].data" :key="index">
-                  <img v-lazy="item.avatar" alt="">
+<!--                  <img v-lazy="item.avatar" alt="">-->
                   <span>{{item.name}}</span>
                 </li>
               </ul>
