@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const Home = () => import('@views/home/home')
-const Test = () => import('@views/test/test')
+const Love = () => import('@views/love/love')
 
 const routes = [
   {
@@ -17,11 +17,11 @@ const routes = [
     }
   },
   {
-    path: '/test',
-    name: 'test',
-    component: Test,
+    path: '/love',
+    name: 'love',
+    component: Love,
     meta: {
-      title: '组件测试',
+      title: '爱你哟！',
       keepAlive: true
     }
   }
