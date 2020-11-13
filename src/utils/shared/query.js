@@ -11,7 +11,7 @@ const encode = str => encodeURIComponent(str)
 
 const decode = decodeURIComponent
 
-export function parseQuery (query) {
+export function parseQuery(query) {
   const res = {}
 
   query = query.trim().replace(/^(\?|#|&)/, '')
@@ -39,7 +39,7 @@ export function parseQuery (query) {
   return res
 }
 
-export function stringifyQuery (obj, encodeStr = encode) {
+export function stringifyQuery(obj, encodeStr = encode) {
   const res = obj ? Object.keys(obj).map(key => {
     const val = obj[key]
 

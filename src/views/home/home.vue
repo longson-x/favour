@@ -1,8 +1,11 @@
 <template>
   <div class="container">
+    <v-header title="首页"></v-header>
     <V-container :header="false" :footer="true" :footer-height="100">
       <div class="main-home">
-        <button v-for="(i, idx) in routerList.filter((i, idx) => idx !== 0)" :key="idx" @click="handleToJump(i.path)">{{i.meta.title}}</button>
+        <button v-for="(i, idx) in routerList.filter((i, idx) => idx !== 0)" :key="idx" @click="handleToJump(i.path)">
+          {{ i.meta.title }}
+        </button>
       </div>
     </V-container>
     <V-footer :height="100">
@@ -17,13 +20,15 @@
 
 <script>
 import Router from '../../../src/router/index'
+import VHeader from '@components/header/header'
 import VContainer from '@components/container/container'
 import VFooter from '@components/footer/footer'
 
 export default {
   components: {
+    VHeader,
     VContainer,
-    VFooter
+    VFooter,
   },
   created() {
     // this.$showLoading('加载中')
@@ -32,14 +37,14 @@ export default {
   },
   data() {
     return {
-      routerList: []
+      routerList: [],
     }
   },
   methods: {
     handleToJump(val) {
       this.$router.push(val)
-    }
-  }
+    },
+  },
 }
 </script>
 

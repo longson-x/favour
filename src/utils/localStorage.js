@@ -1,12 +1,12 @@
 export default {
-  save (key, value) {
+  save(key, value) {
     try {
       localStorage.setItem(key, value)
     } catch (e) {
       console.error('保存缓存时出错')
     }
   },
-  get (key) {
+  get(key) {
     let result
     try {
       result = localStorage.getItem(key)
@@ -29,11 +29,11 @@ export default {
       return result
     }
   },
-  remove (key) {
+  remove(key) {
     try {
       localStorage.removeItem(key)
     } catch (e) {
       console.error('删除缓存时出错')
     }
-  }
+  },
 }

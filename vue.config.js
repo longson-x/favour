@@ -18,7 +18,6 @@ module.exports = {
   },
 
   configureWebpack: config => {
-
     return {
       optimization: {
         runtimeChunk: 'single',
@@ -32,11 +31,11 @@ module.exports = {
               name(module) {
                 const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1]
                 return `npm.${packageName.replace('@', '')}`
-              }
-            }
-          }
-        }
-      }
+              },
+            },
+          },
+        },
+      },
     }
   },
 
@@ -51,9 +50,9 @@ module.exports = {
       less: {
         modifyVars: {
           // 直接覆盖变量
-          hack: `true; @import "${path.join(__dirname, './src/assets/less/custom.less')}";`
-        }
-      }
-    }
-  }
+          hack: `true; @import "${path.join(__dirname, './src/assets/less/custom.less')}";`,
+        },
+      },
+    },
+  },
 }

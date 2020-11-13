@@ -10,13 +10,14 @@ module.exports = {
     'plugin:vue/essential',
     '@vue/standard'
   ],
+  parserOptions: {
+    parser: 'babel-eslint'
+  },
   rules: {
     'no-console': 'off',
     'no-debugger': 'off',
-    "space-before-function-paren": 0,
-    'semi': "off"
-  },
-  parserOptions: {
-    parser: 'babel-eslint'
+    'standard/no-callback-literal': 'off',
+    'space-before-function-paren': ['error', 'never'],
+    "comma-dangle": ["error", "always-multiline"],
   }
 }

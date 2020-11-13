@@ -5,6 +5,7 @@ Vue.use(VueRouter)
 
 const Home = () => import('@views/home/home')
 const Love = () => import('@views/love/love')
+const TestLuckCard = () => import('@views/testCard/testCard')
 
 const routes = [
   {
@@ -13,8 +14,8 @@ const routes = [
     component: Home,
     meta: {
       title: '入口',
-      keepAlive: true
-    }
+      keepAlive: true,
+    },
   },
   {
     path: '/love',
@@ -22,15 +23,24 @@ const routes = [
     component: Love,
     meta: {
       title: '爱你哟！',
-      keepAlive: true
-    }
-  }
+      keepAlive: true,
+    },
+  },
+  {
+    path: '/testLuckCard',
+    name: 'testLuckCard',
+    component: TestLuckCard,
+    meta: {
+      title: '测试刮刮卡',
+      keepAlive: true,
+    },
+  },
 ]
 
 const router = new VueRouter({
   mode: 'hash',
   base: 'favour',
-  routes
+  routes,
 })
 
 router.beforeEach((to, from, next) => {

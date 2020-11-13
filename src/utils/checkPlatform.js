@@ -1,20 +1,20 @@
 export default {
-  isWeiXin () {
+  isWeiXin() {
     const ua = navigator.userAgent.toLowerCase()
     return !!ua.match(/MicroMessenger/i)
   },
 
-  isH5 () {
+  isH5() {
     return window && !this.isWeiXin()
   },
 
-  isIOS () {
+  isIOS() {
     const ua = navigator.userAgent
     return !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
   },
 
-  isAndroid () {
+  isAndroid() {
     const ua = navigator.userAgent
     return !!ua.match(/(Android)/i) // android终端
-  }
+  },
 }

@@ -15,7 +15,7 @@ import scroller from '@mixins/scroller/index'
 import { supportsPassive } from '@utils/shared'
 
 const passiveOptions = supportsPassive ? {
-  passive: true
+  passive: true,
 } : false
 
 export default {
@@ -23,43 +23,43 @@ export default {
   props: {
     scrollX: {
       type: Boolean,
-      default: false
+      default: false,
     },
     scrollY: {
       type: Boolean,
-      default: false
+      default: false,
     },
     upperThreshold: {
       type: [Number, String],
-      default: 50
+      default: 50,
     },
     lowerThreshold: {
       type: [Number, String],
-      default: 50
+      default: 50,
     },
     scrollTop: {
       type: [Number, String],
-      default: 0
+      default: 0,
     },
     scrollLeft: {
       type: [Number, String],
-      default: 0
+      default: 0,
     },
     scrollIntoView: {
       type: String,
-      default: ''
+      default: '',
     },
     scrollWithAnimation: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       lastScrollTop: this.scrollTopNumber,
       lastScrollLeft: this.scrollLeftNumber,
       lastScrollToUpperTime: 0,
-      lastScrollToLowerTime: 0
+      lastScrollToLowerTime: 0,
     }
   },
   computed: {
@@ -74,7 +74,7 @@ export default {
     },
     scrollLeftNumber() {
       return Number(this.scrollLeft) || 0
-    }
+    },
   },
   watch: {
     scrollTopNumber(val) {
@@ -85,14 +85,14 @@ export default {
     },
     scrollIntoView(val) {
       this._scrollIntoViewChanged(val)
-    }
+    },
   },
   mounted() {
     var self = this
     this._scrollTopChanged(this.scrollTopNumber)
     this._scrollLeftChanged(this.scrollLeftNumber)
     this._scrollIntoViewChanged(this.scrollIntoView)
-    this.__handleScroll = function (event) {
+    this.__handleScroll = function(event) {
       event.preventDefault()
       event.stopPropagation()
       self._handleScroll.bind(self, event)()
@@ -100,16 +100,16 @@ export default {
     var touchStart = null
     var needStop = null
 
-    this.__handleTouchStart = function (event) {
+    this.__handleTouchStart = function(event) {
       if (event.touches.length === 1) {
         needStop = null
         touchStart = {
           x: event.touches[0].pageX,
-          y: event.touches[0].pageY
+          y: event.touches[0].pageY,
         }
       }
     }
-    this.__handleTouchMove = function (event) {
+    this.__handleTouchMove = function(event) {
       var x = event.touches[0].pageX
       var y = event.touches[0].pageY
       var main = self.$refs.main
@@ -148,7 +148,7 @@ export default {
         event.stopPropagation()
       }
     }
-    this.__handleTouchEnd = function (event) {
+    this.__handleTouchEnd = function(event) {
       touchStart = null
     }
 
@@ -156,7 +156,7 @@ export default {
     this.$refs.main.addEventListener('touchmove', this.__handleTouchMove, passiveOptions)
     this.$refs.main.addEventListener('touchend', this.__handleTouchEnd, passiveOptions)
     this.$refs.main.addEventListener('scroll', this.__handleScroll, supportsPassive ? {
-      passive: false
+      passive: false,
     } : false)
   },
   activated() {
@@ -169,11 +169,11 @@ export default {
     this.$refs.main.removeEventListener('touchmove', this.__handleTouchMove, passiveOptions)
     this.$refs.main.removeEventListener('touchend', this.__handleTouchEnd, passiveOptions)
     this.$refs.main.removeEventListener('scroll', this.__handleScroll, supportsPassive ? {
-      passive: false
+      passive: false,
     } : false)
   },
   methods: {
-    scrollTo: function (val, type) {
+    scrollTo: function(val, type) {
       var mainEle = this.$refs.main
       val < 0 ? val = 0 : type === 'x' && val > mainEle.scrollWidth - mainEle.offsetWidth ? val = mainEle.scrollWidth - mainEle.offsetWidth
         : type === 'y' && val > mainEle.scrollHeight - mainEle.offsetHeight && (val = mainEle.scrollHeight - mainEle.offsetHeight)
@@ -203,7 +203,7 @@ export default {
         this.$refs.content.style.webkitTransform = o
       }
     },
-    _handleScroll: function ($event) {
+    _handleScroll: function($event) {
       if (!($event.timeStamp - this._lastScrollTime < 20)) {
         this._lastScrollTime = $event.timeStamp
         const target = $event.target
@@ -213,18 +213,18 @@ export default {
           scrollHeight: target.scrollHeight,
           scrollWidth: target.scrollWidth,
           deltaX: this.lastScrollLeft - target.scrollLeft,
-          deltaY: this.lastScrollTop - target.scrollTop
+          deltaY: this.lastScrollTop - target.scrollTop,
         })
         if (this.scrollY) {
           if (target.scrollTop <= this.upperThresholdNumber && this.lastScrollTop - target.scrollTop > 0 && $event.timeStamp - this.lastScrollToUpperTime > 200) {
             this.$emit('scrolltoupper', $event, {
-              direction: 'top'
+              direction: 'top',
             })
             this.lastScrollToUpperTime = $event.timeStamp
           }
           if (target.scrollTop + target.offsetHeight + this.lowerThresholdNumber >= target.scrollHeight && this.lastScrollTop - target.scrollTop < 0 && $event.timeStamp - this.lastScrollToLowerTime > 200) {
             this.$emit('scrolltolower', $event, {
-              direction: 'bottom'
+              direction: 'bottom',
             })
             this.lastScrollToLowerTime = $event.timeStamp
           }
@@ -232,13 +232,13 @@ export default {
         if (this.scrollX) {
           if (target.scrollLeft <= this.upperThresholdNumber && this.lastScrollLeft - target.scrollLeft > 0 && $event.timeStamp - this.lastScrollToUpperTime > 200) {
             this.$emit('scrolltoupper', $event, {
-              direction: 'left'
+              direction: 'left',
             })
             this.lastScrollToUpperTime = $event.timeStamp
           }
           if (target.scrollLeft + target.offsetWidth + this.lowerThresholdNumber >= target.scrollWidth && this.lastScrollLeft - target.scrollLeft < 0 && $event.timeStamp - this.lastScrollToLowerTime > 200) {
             this.$emit('scrolltolower', $event, {
-              direction: 'right'
+              direction: 'right',
             })
             this.lastScrollToLowerTime = $event.timeStamp
           }
@@ -247,7 +247,7 @@ export default {
         this.lastScrollLeft = target.scrollLeft
       }
     },
-    _scrollTopChanged: function (val) {
+    _scrollTopChanged: function(val) {
       if (this.scrollY) {
         if (this._innerSetScrollTop) {
           this._innerSetScrollTop = false
@@ -260,7 +260,7 @@ export default {
         }
       }
     },
-    _scrollLeftChanged: function (val) {
+    _scrollLeftChanged: function(val) {
       if (this.scrollX) {
         if (this._innerSetScrollLeft) {
           this._innerSetScrollLeft = false
@@ -273,7 +273,7 @@ export default {
         }
       }
     },
-    _scrollIntoViewChanged: function (id) {
+    _scrollIntoViewChanged: function(id) {
       if (id) {
         if (!/^[_a-zA-Z][-_a-zA-Z0-9:]*$/.test(id)) {
           console.group('scroll-into-view="' + id + '" 有误')
@@ -308,7 +308,7 @@ export default {
         }
       }
     },
-    _transitionEnd: function (val, type) {
+    _transitionEnd: function(val, type) {
       this.$refs.content.style.transition = ''
       this.$refs.content.style.webkitTransition = ''
       this.$refs.content.style.transform = ''
@@ -328,29 +328,31 @@ export default {
       const main = this.$refs.main
       return {
         scrollLeft: main.scrollLeft,
-        scrollTop: main.scrollTop
+        scrollTop: main.scrollTop,
       }
-    }
-  }
+    },
+  },
 }
 </script>
 <style scoped>
-  *[hidden] {
-    display: none;
-  }
+*[hidden] {
+  display: none;
+}
 
-  .scroll-view-main {
-    position: relative;
-    -webkit-overflow-scrolling: touch;
-    width: 100%;
-    /* display: flex; 时在安卓下会导致scrollWidth和offsetWidth一样 */
-    height: 100%;
-    max-height: inherit;
-  }
-  .scroll-view-main::-webkit-scrollbar {
-    display: none;
-  }
-  .scroll-view-content {
-    height: 100%;
-  }
+.scroll-view-main {
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  /* display: flex; 时在安卓下会导致scrollWidth和offsetWidth一样 */
+  height: 100%;
+  max-height: inherit;
+}
+
+.scroll-view-main::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-view-content {
+  height: 100%;
+}
 </style>

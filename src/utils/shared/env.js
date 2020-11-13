@@ -3,10 +3,11 @@ export let supportsPassive = false
 
 try {
   const opts = Object.defineProperty({}, 'passive', ({
-    get () {
+    get() {
       supportsPassive = true
-    }
+    },
   }))
   window.addEventListener('testPassive', null, opts)
   window.removeEventListener('testPassive', null, opts)
-} catch (e) {}
+} catch (e) {
+}

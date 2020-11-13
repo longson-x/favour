@@ -1,4 +1,4 @@
-export function plusReady (callback) {
+export function plusReady(callback) {
   if (typeof callback !== 'function') {
     return
   }

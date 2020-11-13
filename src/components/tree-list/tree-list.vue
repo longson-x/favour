@@ -10,27 +10,27 @@ export default {
   props: {
     height: {
       type: String,
-      default: ''
+      default: '',
     },
     items: { // 标签集合
       type: Array,
       // eslint-disable-next-line vue/require-valid-default-prop
-      default: []
+      default: [],
     },
     selectedActive: { // 当前标签
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   data() {
     return {
-      active: this.selectedActive
+      active: this.selectedActive,
     }
   },
   methods: {
     changeHandler(idx) {
       this.$emit('click', idx)
-    }
-  }
+    },
+  },
 }
 </script>

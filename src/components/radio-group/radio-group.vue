@@ -4,7 +4,7 @@
          :key="idx">
       <img :style="{width: $px2vw(iconSize), height: $px2vw(iconSize), marginRight: $px2vw(marginRight)}"
            :src="i.checked ? activeIcon : inactiveIcon"/>
-      <p>{{i.label}}</p>
+      <p>{{ i.label }}</p>
     </div>
   </div>
 </template>
@@ -14,15 +14,15 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'single'
+      default: 'single',
     },
     fontSize: {
       type: Number,
-      default: 30
+      default: 30,
     },
     iconSize: {
       type: Number,
-      default: 36
+      default: 36,
     },
     items: {
       type: Array,
@@ -31,36 +31,36 @@ export default {
         {
           id: 1,
           label: '1',
-          checked: false
+          checked: false,
         },
         {
           id: 2,
           label: '2',
-          checked: false
+          checked: false,
         },
         {
           id: 3,
           label: '3',
-          checked: false
-        }
-      ]
+          checked: false,
+        },
+      ],
     },
     marginRight: {
       type: Number,
-      default: 20
+      default: 20,
     },
     activeIcon: {
       type: String,
-      default: ''
+      default: '',
     },
     inactiveIcon: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   data() {
     return {
-      multi: [] // 多选push进里面
+      multi: [], // 多选push进里面
     }
   },
   methods: {
@@ -83,23 +83,23 @@ export default {
         this.multi = this.items.filter(i => i.checked)
         this.$emit('click', this.multi)
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style scoped lang="less">
-  .radio-group {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.radio-group {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-    .radio {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      color: #333;
-    }
+  .radio {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: #333;
   }
+}
 </style>

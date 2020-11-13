@@ -4,6 +4,7 @@ import apis from '../service/api'
 import HTTP_STATUS from '../service/status'
 import { setUrl, isNotBlank } from './index'
 import vm from '../main'
+
 // 微信config配置
 /**
  * @Description: 微信配置
@@ -12,30 +13,31 @@ import vm from '../main'
  * @param url 需要配置的页面地址
  * @param jsApiList 需要配置的页面需要使用的api接口集合
  */
-function weChatConfig (jsApiList = ['hideMenuItems', 'scanQRCode', 'chooseWXPay', 'onMenuShareTimeline',
-  'onMenuShareAppMessage'
+function weChatConfig(jsApiList = ['hideMenuItems', 'scanQRCode', 'chooseWXPay', 'onMenuShareTimeline',
+  'onMenuShareAppMessage',
 ]) {
   const url = setUrl()
   return config(process.env.VUE_APP_WE_CHAT_INNER_ID, url, jsApiList)
 }
-async function config (weChatConfigId, url, jsApiList) {
+
+async function config(weChatConfigId, url, jsApiList) {
   const isWeChat = checkPlatform.isWeiXin()
   if (isWeChat && isNotBlank(url)) {
     const genConfigParams = {
       weChatConfigId,
-      targetUrl: url
+      targetUrl: url,
     }
     const applyParRes = await apis.weChatConfig(genConfigParams)
     const wxConfigData = applyParRes.data.data
     const {
-      code
+      code,
     } = applyParRes.data
     if (code === HTTP_STATUS.REQUEST_SUCCESS_STATUS) {
       const {
         timestamp,
         nonceStr,
         signature,
-        appId
+        appId,
       } = wxConfigData
       const configData = {
         debug: false, // 开启调试模式
@@ -43,7 +45,7 @@ async function config (weChatConfigId, url, jsApiList) {
         timestamp, // 必填，生成签名的时间戳
         nonceStr, // 必填，生成签名的随机串
         signature, // 必填，签名，见附录1
-        jsApiList
+        jsApiList,
       }
       console.log('configData : ', wxConfigData)
       wx.config(configData)
@@ -53,13 +55,13 @@ async function config (weChatConfigId, url, jsApiList) {
   return false
 }
 
-function noop () {
+function noop() {
 
 }
 
-function initOpenId (router, url, callback = noop) {
+function initOpenId(router, url, callback = noop) {
   const {
-    state
+    state,
   } = router.query
   // const storageOpenId = storage.get('openId');
   // const userId = storage.get('userId');
@@ -76,7 +78,7 @@ function initOpenId (router, url, callback = noop) {
     // 包含code参数，说明是微信授权之后回调的，可以使用该code获取openid
     if (router.query.hasOwnProperty('code')) {
       const {
-        code
+        code,
       } = router.query
       console.log(code)
       getOpenId(code, process.env.VUE_APP_WE_CHAT_INNER_ID, callback)
@@ -93,10 +95,10 @@ function initOpenId (router, url, callback = noop) {
   }
 }
 
-async function getOpenId (code, weChatConfigId, callback) {
+async function getOpenId(code, weChatConfigId, callback) {
   const params = {
     code,
-    weChatConfigId
+    weChatConfigId,
   }
   let openId = ''
 
@@ -115,11 +117,11 @@ async function getOpenId (code, weChatConfigId, callback) {
   }
 }
 
-async function getWeChatUserInfo (openId, callback = noop) {
+async function getWeChatUserInfo(openId, callback = noop) {
   let weChatConfigId = process.env.VUE_APP_WE_CHAT_INNER_ID
   const params = {
     openId,
-    weChatConfigId
+    weChatConfigId,
   }
   let userInfo
 
@@ -138,7 +140,7 @@ async function getWeChatUserInfo (openId, callback = noop) {
   }
 }
 
-function genGetCodeUrl (redirectUri, appId = process.env.VUE_APP_WE_CHAT_APP_ID, params) {
+function genGetCodeUrl(redirectUri, appId = process.env.VUE_APP_WE_CHAT_APP_ID, params) {
   return `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=snsapi_base&state=${params}#wechat_redirect`
 }
 
@@ -149,23 +151,23 @@ function genGetCodeUrl (redirectUri, appId = process.env.VUE_APP_WE_CHAT_APP_ID,
  * @param menuList 需要隐藏的菜单集合
  * @param callback
  */
-function hideWeChatMenuItems (menuList = ['menuItem:share:qq', 'menuItem:share:QZone', 'menuItem:share:weiboApp',
-  'menuItem:copyUrl'
+function hideWeChatMenuItems(menuList = ['menuItem:share:qq', 'menuItem:share:QZone', 'menuItem:share:weiboApp',
+  'menuItem:copyUrl',
 ], callback) {
   wx.ready(() => {
     wx.hideMenuItems({
       menuList, // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录4
-      success (res) {
+      success(res) {
         if (callback && callback instanceof Function) {
           callback(res)
         }
-      }
+      },
     })
   })
 }
 
 // 分享
-function share (title, desc, link, icon, timeLineTitle) {
+function share(title, desc, link, icon, timeLineTitle) {
   weChatShareTimeline((timeLineTitle || title), link, icon)
   weChatShareAppMessage(title, desc, link, icon)
 }
@@ -179,7 +181,7 @@ function share (title, desc, link, icon, timeLineTitle) {
  * @param imgUrl 分享图标
  * @param callback 回调函数
  */
-function weChatShareTimeline (title, link, imgUrl, callback) {
+function weChatShareTimeline(title, link, imgUrl, callback) {
   let ret = {}
   wx.ready(() => {
     wx.onMenuShareTimeline({
@@ -190,37 +192,37 @@ function weChatShareTimeline (title, link, imgUrl, callback) {
       // 分享图标
       imgUrl,
       // 用户确认分享后执行的回调函数
-      success () {
+      success() {
         if (callback && callback instanceof Function) {
           ret = {
             success: true,
             type: '1',
-            msg: '分享成功'
+            msg: '分享成功',
           }
           callback(ret)
         }
       },
       // 用户取消分享后执行的回调函数
-      cancel () {
+      cancel() {
         if (callback && callback instanceof Function) {
           ret = {
             success: false,
             type: '2',
-            msg: '取消分享'
+            msg: '取消分享',
           }
           callback(ret)
         }
       },
-      fail (res) {
+      fail(res) {
         if (callback && callback instanceof Function) {
           ret = {
             success: false,
             type: '3',
-            msg: res
+            msg: res,
           }
           callback(ret)
         }
-      }
+      },
     })
   })
 }
@@ -235,7 +237,7 @@ function weChatShareTimeline (title, link, imgUrl, callback) {
  * @param imgUrl 分享图标
  * @param callback 回调函数
  */
-function weChatShareAppMessage (title, desc, link, imgUrl, callback) {
+function weChatShareAppMessage(title, desc, link, imgUrl, callback) {
   let ret = {}
   wx.ready(() => {
     wx.onMenuShareAppMessage({
@@ -248,53 +250,53 @@ function weChatShareAppMessage (title, desc, link, imgUrl, callback) {
       // 分享图标
       imgUrl,
       // 用户确认分享后执行的回调函数
-      success () {
+      success() {
         if (callback && callback instanceof Function) {
           ret = {
             success: true,
             type: '1',
-            msg: '分享成功'
+            msg: '分享成功',
           }
           callback(ret)
         }
       },
       // 用户取消分享后执行的回调函数
-      cancel () {
+      cancel() {
         // alert('取消分享回调函数');
         if (callback && callback instanceof Function) {
           ret = {
             success: false,
             type: '2',
-            msg: '取消分享'
+            msg: '取消分享',
           }
           callback(ret)
         }
       },
-      fail (res) {
+      fail(res) {
         if (callback && callback instanceof Function) {
           ret = {
             success: false,
             type: '3',
-            msg: res
+            msg: res,
           }
           callback(ret)
         }
-      }
+      },
     })
   })
 }
 
 // 扫码
-function weChatScanQrCode (scanType = ['qrCode', 'barCode'], success, failure) { // ["qrCode","barCode"]
+function weChatScanQrCode(scanType = ['qrCode', 'barCode'], success, failure) { // ["qrCode","barCode"]
   wx.ready(() => {
     wx.scanQRCode({
       needResult: 1,
       scanType,
-      success (res) {
+      success(res) {
         if (success && success instanceof Function) {
           success(res)
         }
-      }
+      },
     })
   })
   wx.error((res) => {
@@ -306,25 +308,25 @@ function weChatScanQrCode (scanType = ['qrCode', 'barCode'], success, failure) {
 
 // 位置
 
-function weChatGetLocation (successCB, failCB) {
+function weChatGetLocation(successCB, failCB) {
   wx.ready(() => {
     wx.getLocation({
       type: 'gcj02', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-      success (res) {
+      success(res) {
         console.log(res)
         typeof successCB === 'function' && successCB(res)
       },
-      fail (err) {
+      fail(err) {
         console.log(err)
         typeof failCB === 'function' && failCB(err)
       },
-      cancel (err) {
+      cancel(err) {
         console.log(err)
         typeof failCB === 'function' && failCB(err)
       },
-      complete (err) {
+      complete(err) {
         console.log(err)
-      }
+      },
     })
   })
   wx.error((err) => {
@@ -333,7 +335,7 @@ function weChatGetLocation (successCB, failCB) {
 }
 
 // 微信H5支付
-async function payForH5InnerId (productDesc, orderNum, price, notifyUrl, successUrl, failureUrl, callback) {
+async function payForH5InnerId(productDesc, orderNum, price, notifyUrl, successUrl, failureUrl, callback) {
   // let isWeChat = checkPlatform.isWeiXin() && !checkPlatform.isYzl();
   const isWeChat = checkPlatform.isWeiXin()
   console.log('是否在微信中打开的 : ', isWeChat)
@@ -350,7 +352,7 @@ async function payForH5InnerId (productDesc, orderNum, price, notifyUrl, success
     notifyUrl,
     tradeType,
     attach: 'attach', // 暂时写死
-    openId
+    openId,
   }
 
   console.log('微信预支付需要的参数 applyPayDataParams : ', applyPayDataParams)
@@ -363,10 +365,10 @@ async function payForH5InnerId (productDesc, orderNum, price, notifyUrl, success
 
   const payResultData = applyParRes.data.data
   const {
-    code
+    code,
   } = applyParRes.data
   const {
-    msg
+    msg,
   } = applyParRes.data
   console.log('微信预支付返回结果 payResultData : ', payResultData)
   if (code === HTTP_STATUS.REQUEST_SUCCESS_STATUS) {
@@ -376,7 +378,7 @@ async function payForH5InnerId (productDesc, orderNum, price, notifyUrl, success
       nonceStr,
       prepayId,
       signType,
-      paySign
+      paySign,
     } = payResultData
     mwebUrl = isWeChat ? '' : payResultData.mwebUrl
     if (isWeChat) {
@@ -391,7 +393,7 @@ async function payForH5InnerId (productDesc, orderNum, price, notifyUrl, success
           package: `prepay_id=${prepayId}`, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
           signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
           paySign, // 支付签名
-          success (res) {
+          success(res) {
             if (successUrl !== null && successUrl !== '') {
               // alert(successUrl)
               window.location.href = successUrl
@@ -400,25 +402,25 @@ async function payForH5InnerId (productDesc, orderNum, price, notifyUrl, success
               alert('支付成功, 下一步跳转页面')
             }
           },
-          Error (err) {
+          Error(err) {
             if (failureUrl !== null && failureUrl !== '') {
               alert('支付失败')
             } else {
               alert(`支付失败, 错误信息:${err}`)
             }
           },
-          cancel (res) {
+          cancel(res) {
             // alert('取消支付');
             if (callback && callback instanceof Function) {
               callback(res)
             }
           },
-          fail (res) {
+          fail(res) {
             // alert("支付失败");
             if (callback && callback instanceof Function) {
               callback(res)
             }
-          }
+          },
         })
       })
     } else {
@@ -428,6 +430,7 @@ async function payForH5InnerId (productDesc, orderNum, price, notifyUrl, success
     vm.$toast(msg)
   }
 }
+
 export default {
   weChatConfig,
   initOpenId,
@@ -438,5 +441,5 @@ export default {
   weChatShareAppMessage,
   weChatScanQrCode,
   weChatGetLocation,
-  payForH5InnerId
+  payForH5InnerId,
 }

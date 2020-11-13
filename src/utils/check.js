@@ -113,7 +113,7 @@ const checkVerification = (data, message) => {
   }
 }
 
-const checkEmail = (data,message) => {
+const checkEmail = (data, message) => {
   const reg = /^([A-Za-z0-9_\-\.\u4e00-\u9fa5])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$/;
   if (!reg.test(data)) {
     throw new Error(message)
@@ -133,9 +133,9 @@ export const check = (type, data, message, customRule) => {
     checkBoolean(data, message)
   } else if (type === 'verification') {
     checkVerification(data, message)
-  } else if (type==='email'){
-    checkEmail(data,message)
-  }else if (type === 'rule') { // 业务自定义规则
+  } else if (type === 'email') {
+    checkEmail(data, message)
+  } else if (type === 'rule') { // 业务自定义规则
     if (!customRule(data)) {
       throw new Error(message)
     }

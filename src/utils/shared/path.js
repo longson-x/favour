@@ -1,4 +1,4 @@
-export function parsePath (path) {
+export function parsePath(path) {
   let hash = ''
   let query = ''
 
@@ -17,6 +17,6 @@ export function parsePath (path) {
   return {
     path,
     query,
-    hash
+    hash,
   }
 }

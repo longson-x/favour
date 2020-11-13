@@ -1,13 +1,13 @@
 let id = 0
 const callbacks = {}
 
-function warp (fn) {
-  return function (options = {}) {
+function warp(fn) {
+  return function(options = {}) {
     const callbackId = String(id++)
     callbacks[callbackId] = {
       success: options.success,
       fail: options.fail,
-      complete: options.complete
+      complete: options.complete,
     }
     const data = Object.assign({}, options)
     delete data.success
@@ -20,7 +20,7 @@ function warp (fn) {
   }
 }
 
-function invoke (callbackId, res) {
+function invoke(callbackId, res) {
   const callback = callbacks[callbackId] || {}
   delete callbacks[callbackId]
   const errMsg = res.errMsg || ''
@@ -34,5 +34,5 @@ function invoke (callbackId, res) {
 
 export const callback = {
   warp,
-  invoke
+  invoke,
 }

@@ -21,7 +21,7 @@ const resizeHandler = () => {
       window.setTimeout(() => {
         document.activeElement.scrollIntoView({
           block: 'center',
-          behavior: 'smooth'
+          behavior: 'smooth',
         })
       }, 150) // 考虑到键盘弹起有延时
     }
@@ -61,7 +61,7 @@ const focusoutFunc = () => {
 }
 
 export default {
-  mounted () {
+  mounted() {
     if (platform.isAndroid()) {
       // android 端检测 resize 事件来判断软键盘是否弹出
       originHeight = document.documentElement.clientHeight || document.body.clientHeight
@@ -73,7 +73,7 @@ export default {
       document.body.addEventListener('focusout', focusoutFunc)
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     if (platform.isAndroid()) {
       window.removeEventListener('resize', resizeHandler)
     }
@@ -81,5 +81,5 @@ export default {
       document.body.removeEventListener('focusin', focusinFunc)
       document.body.removeEventListener('focusout', focusoutFunc)
     }
-  }
+  },
 }

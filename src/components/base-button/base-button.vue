@@ -1,26 +1,54 @@
 <template>
-  <div class="loading-wrapper">
-    <div class="loading"></div>
-  </div>
+  <button class="btn__primary" :disabled="loading || disabled" v-on="$listeners">
+    <div class="loading" v-if="loading"></div>
+    <slot></slot>
+  </button>
 </template>
 
 <script>
 export default {
-  name: 'loading',
+  name: 'BaseButton',
+  props: {
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+  },
 }
 </script>
 
 <style lang="less" scoped>
-.loading-wrapper {
+.btn__primary {
   display: flex;
-  height: 100%;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  width: 670px;
+  height: 100px;
+  color: #FFFFFF;
+  font-size: 34px;
+  border: none;
+  outline: none;
+  background: #FF9C4F;
+  border-radius: 10px;
+
+  &:active {
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    background: #2c2c2c;
+  }
 }
 
 .loading {
-  width: 60px;
-  height: 60px;
+  width: 30px;
+  height: 30px;
   margin-right: 30px;
   display: inline-block;
   vertical-align: middle;

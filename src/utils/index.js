@@ -194,6 +194,6 @@ export const unique = (arr) => {
 }
 
 // 检查是否处于登录状态
-export function isLogged (userIdKey = 'userId', phoneKey = 'phone') {
+export function isLogged(userIdKey = 'userId', phoneKey = 'phone') {
   return !!(storage.get(userIdKey) && storage.get(phoneKey))
 }
